@@ -324,21 +324,7 @@ class RSMQClient implements RSMQClientInterface
         $transaction->hmget("$key:Q", ['vt', 'delay', 'maxsize', 'totalrecv', 'totalsent', 'created', 'modified']);
         $transaction->zcard($key);
         $transaction->zcount($key, $resp[0] . '0000', "+inf");
-        $transaction->hgetall("$key:Q");
         $resp = $transaction->execute();
-
-        if($resp[1] != 0){
-            foreach($resp[3] as $k => $v){
-                if(substr($k, -4) == '_mat'){
-                    $arr[] = [$k => $v];
-                }
-            }
-
-            $rev = array_reverse($arr);
-            for($i = $resp[1] - 1; $i >= 0; $i--){
-                $mes[] = $rev[$i];
-            }
-        }
 
         if (!isset($resp[0][0])) {
             throw new QueueNotFoundException('Queue not found.');
@@ -353,8 +339,7 @@ class RSMQClient implements RSMQClientInterface
             (int)$resp[0][5],
             (int)$resp[0][6],
             $resp[1],
-            $resp[2],
-            $mes
+            $resp[2]
         );
     }
 
@@ -543,7 +528,8 @@ class RSMQClient implements RSMQClientInterface
         $transaction->hgetall("$key:Q");
         $resp = $transaction->execute();
 
-        if($resp[1] != 0){
+        $mes = []; //iniate array
+        if($resp[1] != 0){ //run only after got message in queue
             foreach($resp[3] as $k => $v){
                 if(substr($k, -4) == '_mat'){
                     $arr[] = [$k => $v];
