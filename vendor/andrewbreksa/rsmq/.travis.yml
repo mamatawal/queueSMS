@@ -1,0 +1,28 @@
+language: php
+services:
+  - redis
+
+php:
+  - 7.4
+  - 8.0
+  - nightly
+
+matrix:
+  allow_failures:
+    - php: nightly
+  fast_finish: true
+
+install:
+  - composer install -n
+
+script:
+  - composer test -- --coverage-clover=clover.xml
+  - composer phpstan
+  - composer psalm
+
+cache:
+  directories:
+    - $HOME/.composer/cache/files
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)

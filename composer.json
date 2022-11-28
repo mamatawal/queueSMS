@@ -1,0 +1,5 @@
+{
+    "require": {
+        "andrewbreksa/rsmq": "^2.0"
+    }
+}
