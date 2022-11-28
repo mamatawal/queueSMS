@@ -1,5 +1,5 @@
 # queueSMS
-sample PHP application using redis &amp; dockerfile
+simple PHP application using redis &amp; dockerfile
 
 ## Features
 
