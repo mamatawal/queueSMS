@@ -1,0 +1,14 @@
+version: '3.8'
+services:
+  php-apache-environment:
+    image: php:8.1-apache
+    container_name: php-apache
+    volumes:
+      - $PWD:/var/www/html/
+    ports:
+      - 8000:80
+  redis:
+    image: redis:latest
+    container_name: redis
+    ports:
+        - "6379:6379"
