@@ -11,6 +11,13 @@ use AndrewBreksa\RSMQ\RSMQClient;
 
     $rsmq = new RSMQClient($predis);
 
+    // for create queue
+    try{
+        $rsmq->createQueue('myqueue');
+    }catch(Exception $e){
+        
+    }
+
     function insertQueue($message, $rsmq, $messageResponse){
         
         $id = $rsmq->sendMessage('myqueue', $message);
@@ -69,7 +76,6 @@ use AndrewBreksa\RSMQ\RSMQClient;
             $messageResponse = '<span class="error">* SMS Message is required !</span>';
 
             header('Location:index.php?messageResponse='.$messageResponse);
-            exit();
         }else{
             $message = test_input($_POST["message"]);
             $messageResponse = '<span class="success">* SMS Message succesfully been queued</span>';
